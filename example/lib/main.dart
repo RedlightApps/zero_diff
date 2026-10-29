@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:zero_diff/zero_diff.dart';
 
@@ -5,9 +6,21 @@ void main() => runApp(const ZeroDiffShowcaseApp());
 
 /// Interactive code diff and 50,000-line ANSI log console showcase for
 /// `zero_diff`.
-class ZeroDiffShowcaseApp extends StatelessWidget {
+class ZeroDiffShowcaseApp extends StatefulWidget {
   /// Creates a [ZeroDiffShowcaseApp].
   const ZeroDiffShowcaseApp({super.key});
+
+  @override
+  State<ZeroDiffShowcaseApp> createState() => _ZeroDiffShowcaseAppState();
+}
+
+class _ZeroDiffShowcaseAppState extends State<ZeroDiffShowcaseApp> {
+  final ScrollController _logScroll = ScrollController();
+  late final List<String> _logs;
+  DiffViewMode _diffMode = DiffViewMode.unified;
+  String _filterQuery = '';
+  Timer? _tourTimer;
+  int _step = 0;
 
   static const String _oldSource = '''
 class MatchingEngine {
@@ -38,8 +51,9 @@ class MatchingEngine {
 }''';
 
   @override
-  Widget build(BuildContext context) {
-    final logs = List<String>.generate(50000, (i) {
+  void initState() {
+    super.initState();
+    _logs = List<String>.generate(50000, (i) {
       if (i % 4 == 0) {
         return '\x1B[32m[OK]\x1B[0m Committed batch #${100 + i} in 0.8ms';
       }
@@ -52,6 +66,49 @@ class MatchingEngine {
       return '\x1B[31m[ERROR]\x1B[0m Frame budget spike detected on tick #$i';
     });
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _tourTimer = Timer.periodic(const Duration(milliseconds: 1100), (_) {
+        if (mounted) _advanceTour();
+      });
+    });
+  }
+
+  void _advanceTour() {
+    _step = (_step + 1) % 5;
+    switch (_step) {
+      case 0:
+        setState(() {
+          _diffMode = DiffViewMode.unified;
+          _filterQuery = '';
+        });
+        if (_logScroll.hasClients) {
+          _logScroll.animateTo(0, duration: const Duration(milliseconds: 600), curve: Curves.easeOut);
+        }
+      case 1:
+        if (_logScroll.hasClients) {
+          _logScroll.animateTo(720, duration: const Duration(milliseconds: 850), curve: Curves.easeInOut);
+        }
+      case 2:
+        setState(() => _diffMode = DiffViewMode.sideBySide);
+      case 3:
+        setState(() => _filterQuery = 'ERROR');
+      case 4:
+        setState(() {
+          _diffMode = DiffViewMode.unified;
+          _filterQuery = 'WARN';
+        });
+    }
+  }
+
+  @override
+  void dispose() {
+    _tourTimer?.cancel();
+    _logScroll.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
@@ -69,18 +126,22 @@ class MatchingEngine {
         ),
         body: Column(
           children: [
-            const Expanded(
+            Expanded(
               flex: 5,
               child: ZeroDiffViewer(
                 oldText: _oldSource,
                 newText: _newSource,
-                initialMode: DiffViewMode.unified,
+                initialMode: _diffMode,
               ),
             ),
             const Divider(height: 1, color: Color(0xFF1E293B)),
             Expanded(
               flex: 5,
-              child: ZeroLogConsole(logs: logs),
+              child: ZeroLogConsole(
+                logs: _logs,
+                initialFilterQuery: _filterQuery,
+                scrollController: _logScroll,
+              ),
             ),
           ],
         ),

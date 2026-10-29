@@ -20,7 +20,9 @@
 
 <br/>
 
-<img src="https://raw.githubusercontent.com/RedlightApps/zero_diff/main/doc/screenshots/zero_diff_showcase.png" width="360" alt="zero_diff 120Hz Code Diff & ANSI Log Console Showcase"/>
+<img src="https://raw.githubusercontent.com/RedlightApps/zero_diff/main/doc/screenshots/zero_diff_demo.gif" width="320" alt="zero_diff 120Hz Live Animated Demo"/>
+&nbsp;&nbsp;
+<img src="https://raw.githubusercontent.com/RedlightApps/zero_diff/main/doc/screenshots/zero_diff_showcase.png" width="320" alt="zero_diff 120Hz Code Diff & ANSI Log Console Showcase"/>
 
 </div>
 

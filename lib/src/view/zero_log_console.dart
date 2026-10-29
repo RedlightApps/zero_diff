@@ -74,6 +74,8 @@ class ZeroLogConsole extends StatefulWidget {
     this.showSearchBar = true,
     this.lineHeight = 24.0,
     this.theme = const ZeroDiffTheme(),
+    this.initialFilterQuery = '',
+    this.scrollController,
     super.key,
   });
 
@@ -89,12 +91,26 @@ class ZeroLogConsole extends StatefulWidget {
   /// Visual theme configuration.
   final ZeroDiffTheme theme;
 
+  /// Optional external filter query string.
+  final String initialFilterQuery;
+
+  /// Optional external [ScrollController] for programmatic scrolling.
+  final ScrollController? scrollController;
+
   @override
   State<ZeroLogConsole> createState() => _ZeroLogConsoleState();
 }
 
 class _ZeroLogConsoleState extends State<ZeroLogConsole> {
-  String _query = '';
+  late String _query = widget.initialFilterQuery;
+
+  @override
+  void didUpdateWidget(covariant ZeroLogConsole oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialFilterQuery != widget.initialFilterQuery) {
+      _query = widget.initialFilterQuery;
+    }
+  }
 
   List<(int, String)> _computeFiltered() {
     final q = _query.trim().toLowerCase();
@@ -150,6 +166,7 @@ class _ZeroLogConsoleState extends State<ZeroLogConsole> {
                     ),
                   )
                 : ListView.builder(
+                    controller: widget.scrollController,
                     itemExtent: widget.lineHeight,
                     itemCount: visible.length,
                     itemBuilder: (context, index) {

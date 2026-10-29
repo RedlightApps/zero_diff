@@ -49,6 +49,9 @@ class _ZeroDiffViewerState extends State<ZeroDiffViewer> {
   @override
   void didUpdateWidget(covariant ZeroDiffViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialMode != widget.initialMode) {
+      _mode = widget.initialMode;
+    }
     if (oldWidget.oldText != widget.oldText ||
         oldWidget.newText != widget.newText) {
       _summary = MyersDiffEngine.compute(widget.oldText, widget.newText);

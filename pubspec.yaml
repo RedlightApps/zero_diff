@@ -1,12 +1,14 @@
 name: zero_diff
 description: 120Hz Myers O(ND) Code/Text Diff Viewer & Virtualized ANSI Streaming Log Console for Flutter. Supports Unified & Side-by-Side views, word-level intraline highlighting, background Isolate diffing, and 100,000+ line logs. Zero external dependencies.
-version: 1.0.1
+version: 1.0.2
 homepage: https://redlightapps.com
 repository: https://github.com/RedlightApps/zero_diff
 issue_tracker: https://github.com/RedlightApps/zero_diff/issues
 documentation: https://github.com/RedlightApps/zero_diff#readme
 
 screenshots:
+  - description: "Live 120Hz Demo: Unified <-> Side-by-Side Split Diff Switching & 50,000-Line ANSI Log Console Streaming/Filtering"
+    path: doc/screenshots/zero_diff_demo.gif
   - description: "120Hz Myers O(ND) Code Diff Viewer with Word-Level Intraline Highlights & 50,000-Line Virtualized ANSI Log Console"
     path: doc/screenshots/zero_diff_showcase.png
 

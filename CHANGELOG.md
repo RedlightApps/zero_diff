@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Added animated GIF live showcase (`doc/screenshots/zero_diff_demo.gif`), reactive `initialMode` / `initialFilterQuery` / `scrollController` support on `ZeroDiffViewer` and `ZeroLogConsole`, and live Unified <-> Side-by-Side split diff & 50,000-line ANSI log streaming tour in `example/`.
+
 ## 1.0.1
 
 - Added high-resolution iOS Simulator showcase screenshots (`pubspec.yaml` gallery & `README.md`), multi-line block intraline highlight pairing, and enhanced code diff + ANSI log console showcase.
