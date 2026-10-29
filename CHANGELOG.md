@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Added high-resolution iOS Simulator showcase screenshots (`pubspec.yaml` gallery & `README.md`), multi-line block intraline highlight pairing, and enhanced code diff + ANSI log console showcase.
+
 ## 1.0.0
 
 - **Initial Stable Release of `zero_diff` by RedLight Apps (`https://redlightapps.com`).**
